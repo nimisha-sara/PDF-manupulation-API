@@ -63,7 +63,7 @@ This project uses **Python 3.8 or higher**
 ## Roadmap
 
 - [x] Add Page Rotation
-- [ ] Add Pdf Merge
+- [x] Add Pdf Merge
 - [ ] Add Page Deletion
 - [ ] Add Page Duplication
 - [ ] Add Blank Pdf creation & addition

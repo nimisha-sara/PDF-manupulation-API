@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
-from functions import pdf_rotation
+import functions
+import json
 
 
 app = Flask(__name__)
@@ -8,18 +9,9 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def help():
     if(request.method == 'GET'):
-        data = {
-            'rotate':
-            {
-                'parameters':
-                {
-                    'angle': 'Angle to be roated to',
-                    'page': 'Page no of page to be rotated',
-                    'path': 'Filepath of pdf file'
-                },
-                'example': 'http://127.0.0.1:5000/rotate?angle=90&page=1&filepath=C:/Users/sample.pdf'
-            }
-        }
+        _file = 'help.json'
+        with open(_file, 'r', encoding='utf-8') as f:
+            data = json.loads(f.read())
         return jsonify(data)
 
 
@@ -29,7 +21,20 @@ def rotate():
     args.get("angle", type=int)
     args.get("page", type=int)
     args.get("filepath", type=str)
-    return pdf_rotation(int(args['angle']), int(args['page']), args['filepath'])
+    return functions.pdf_rotation(int(args['angle']),
+                                  int(args['page']),
+                                  args['filepath'])
+
+
+@app.route('/merge', methods=['GET'])
+def merge():
+    args = request.args
+    args.get("pdf_loc", type=list)
+    args.get("save_loc", type=str)
+    args.get("save_pdf", type=str)
+    if args['save_pdf'] != "":
+        return functions.pdf_merge(args['pdf_loc'], args['save_loc'], args['save_pdf'])
+    return functions.pdf_merge(args['pdf_loc'], args['save_loc'])
 
 
 if __name__ == '__main__':

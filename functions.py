@@ -1,4 +1,5 @@
 from PyPDF2 import PdfWriter, PdfReader, PdfFileMerger
+import os
 
 
 def check_extention(url):
@@ -24,12 +25,15 @@ def pdf_rotation(angle: int, page_no: int, filepath: str):
     page_no -= 1
     output = {'filepath': "", 'msg': ""}
 
-    if page_no > reader.numPages or page_no <= 0:
-        output['msg'] = "Invalid page"
+    if page_no > reader.numPages or page_no < 0:
+        output['msg'] = f"Invalid page. Page must be <= {reader.numPages + 1}"
+        return output
     if not check_angle(angle):
         output['msg'] = "Invalid angle, angle must be a multiple of 90"
+        return output
     if not check_extention(filepath):
-        output['msg'] = "Invalid file extension"
+        output['msg'] += "Invalid file extension"
+        return output
 
     try:
         for pagenum in range(reader.numPages):
@@ -47,4 +51,36 @@ def pdf_rotation(angle: int, page_no: int, filepath: str):
     return output
 
 
-# pdf_rotation(90, 1, "C:/Users/nimis/Downloads/New folder (2)/sample.pdf")
+def pdf_merge(pdf_loc: list, save_loc: str, save_pdf: str = "merged"):
+    output = {'filepath': "", 'msg': ""}
+    pdf_loc = pdf_loc[1:-1].split(',')
+    merge = PdfFileMerger()
+
+    for _pdf in pdf_loc:
+        if check_extention(_pdf):
+            try:
+                pdf_file = PdfReader(_pdf)
+            except FileNotFoundError:
+                output['msg'] = f"File path incorrect: '{_pdf}'"
+                return output
+            else:
+                try:
+                    merge.append(pdf_file)
+                except Exception as e:
+                    output['msg'] = e
+                    return output
+        else:
+            output['msg'] = f"File is not a pdf: '{_pdf}'"
+            return output
+
+    if os.path.exists(save_loc):
+        with open(save_loc+f"/{save_pdf}.pdf", "wb") as output_stream:
+            try:
+                merge.write(output_stream)
+            except Exception as e:
+                output['msg'] = e
+    else:
+        output['msg'] = f"Output file path incorrect: '{save_loc}'"
+    output['filepath'] = f"{save_loc}/{save_pdf}.pdf"
+    output['msg'] = "Merge Successfull!"
+    return output

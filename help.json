@@ -1,0 +1,18 @@
+{
+    "rotate": {
+        "parameters": {
+            "angle": "Angle to be roated to",
+            "page": "Page no of page to be rotated",
+            "path": "Filepath of pdf file"
+        },
+        "example": "http://127.0.0.1:5000/rotate?angle=90&page=1&filepath=C:/Users/sample.pdf"
+    },
+    "merge": {
+        "parameters": {
+            "pdf_loc": "List of pdf file (location) to be merged",
+            "save_loc": "Directory where merged file should be saved",
+            "save_pdf": "Naeme of merged pdf file. Default - 'merged'"
+        },
+        "example": "http://127.0.0.1:5000/merge?pdf_loc=[C:/Users/sample1.pdf,C:/Users/sample2.pdf]"
+    }
+}
