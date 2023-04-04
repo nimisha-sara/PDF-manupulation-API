@@ -67,8 +67,6 @@ This project uses **Python 3.8 or higher**
 - [ ] Add Page Deletion
 - [ ] Add Page Duplication
 - [ ] Add Blank Pdf creation & addition
-- [ ] Feature xyz
-- [ ] Feature xyz
 
 See the [open issues](https://github.com/nimisha-sara/PDF-manupulation-API/issues) for a full list of proposed features (and known issues).
 
